@@ -1,0 +1,269 @@
+app:
+  description: TechFlow AI - Lesson Generator
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  icon_type: emoji
+  mode: workflow
+  name: TechFlow AI
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/openrouter:0.0.54@fea0bb6f5208e9c654bd8114c93582760994a7406355512c3381bd8b723498b7
+    version: null
+kind: app
+version: 0.6.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      allowed_file_extensions:
+      - .JPG
+      - .JPEG
+      - .PNG
+      - .GIF
+      - .WEBP
+      - .SVG
+      allowed_file_types:
+      - image
+      allowed_file_upload_methods:
+      - local_file
+      - remote_url
+      enabled: false
+      fileUploadConfig:
+        attachment_image_file_size_limit: 2
+        audio_file_size_limit: 50
+        batch_count_limit: 5
+        file_size_limit: 15
+        file_upload_limit: 50
+        image_file_batch_limit: 10
+        image_file_size_limit: 10
+        single_chunk_attachment_limit: 10
+        video_file_size_limit: 100
+        workflow_file_upload_limit: 10
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+      number_limits: 3
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        isInLoop: false
+        sourceType: start
+        targetType: llm
+      id: 1780499851287-source-1780500715700-target
+      source: '1780499851287'
+      sourceHandle: source
+      target: '1780500715700'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInLoop: false
+        sourceType: llm
+        targetType: end
+      id: 1780500715700-source-1780501552658-target
+      source: '1780500715700'
+      sourceHandle: source
+      target: '1780501552658'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: User Input
+        type: start
+        variables:
+        - default: Subject
+          hint: ''
+          label: Subject
+          max_length: 100
+          options: []
+          placeholder: ''
+          required: true
+          type: text-input
+          variable: Subject
+        - default: Grade
+          hint: ''
+          label: Grade
+          max_length: 100
+          options: []
+          placeholder: ''
+          required: true
+          type: text-input
+          variable: Grade
+        - default: Topic
+          hint: ''
+          label: Topic
+          max_length: 100
+          options: []
+          placeholder: ''
+          required: true
+          type: text-input
+          variable: Topic
+        - default: Duration
+          hint: ''
+          label: Duration
+          max_length: 100
+          options: []
+          placeholder: ''
+          required: true
+          type: text-input
+          variable: Duration
+        - default: Language
+          hint: ''
+          label: Language
+          max_length: 100
+          options: []
+          placeholder: ''
+          required: true
+          type: text-input
+          variable: Language
+        - default: Objective
+          hint: ''
+          label: Objective
+          max_length: 100
+          options: []
+          placeholder: ''
+          required: true
+          type: text-input
+          variable: Objective
+      height: 268
+      id: '1780499851287'
+      position:
+        x: 80
+        y: 282
+      positionAbsolute:
+        x: 80
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: completion
+          name: meta-llama/llama-3-8b-instruct
+          provider: langgenius/openrouter/openrouter
+        prompt_template:
+          edition_type: basic
+          text: "You are an expert teacher. Generate a complete, high-quality lesson\
+            \ plan for the following topic:\nSubject: {{#1780499851287.Subject#}}\n\
+            Grade: {{#1780499851287.Grade#}}\nTopic: {{#1780499851287.Topic#}}\nDuration:\
+            \ {{#1780499851287.Duration#}}\nLanguage: {{#1780499851287.Language#}}\n\
+            Objectives: {{#1780499851287.Objective#}}\n \nDo not add extra conversational\
+            \ text or preambles. Output only the structured Markdown lesson plan.\n\
+            \n### Input Lesson Plan Data:\n{{input}}\n\n### Formatting Rules:\n1.\
+            \ **Title**: Start with the emoji `\U0001F393` followed by \"Exploring\
+            \ [Topic Name]\".\n2. **Metadata**: Use these exact emoji keys and key\
+            \ names:\n   - `\U0001F4D6 Subject: [Subject]`\n   - `\U0001F4D6 Grade\
+            \ Level: [Grade Level]`\n   - `\U0001F4D6 Topic: [Topic]`\n   - `\U0001F4D6\
+            \ Duration: [Duration]`\n   - `\U0001F4D6 Language: [Language]`\n   -\
+            \ `\U0001F4D6 Materials: [List of materials]`\n3. **Objectives**: Use\
+            \ the emoji `\U0001F3AF` followed by \"Learning Objectives:\" and a bulleted\
+            \ list starting with `*`.\n4. **Stages**: Divide the lesson into stages\
+            \ separated by `---`. Each stage must follow this exact format:\n   -\
+            \ Stage Header: `⏱️ Stage [Number]: [Stage Name] ([Duration] minutes)`\n\
+            \   - Activity: `*   Activity: \"[Activity Name]\" [Description]`\n  \
+            \ - Teacher Actions: `*   Teacher Actions:` followed by an indented, numbered\
+            \ list (1., 2., 3., etc.).\n   - Student Actions: `*   Student Actions:`\
+            \ followed by an indented, numbered list (1., 2., 3., etc.).\n5. **Indentation**:\
+            \ Make sure the numbered lists for Teacher/Student Actions are indented\
+            \ with 4 spaces to render correctly under the bullet points.\n\n---\n\n\
+            ### Output Template:\n\n\U0001F393 Exploring [Topic Name]\n\n\U0001F4D6\
+            \ Subject: [Subject]\n\U0001F4D6 Grade Level: [Grade Level]\n\U0001F4D6\
+            \ Topic: [Topic]\n\U0001F4D6 Duration: [Duration]\n\U0001F4D6 Language:\
+            \ [Language]\n\U0001F4D6 Materials: [Materials]\n\n\U0001F3AF Learning\
+            \ Objectives:\n* [Objective 1]\n* [Objective 2]\n* [Objective 3]\n\n---\n\
+            \n⏱️ Stage 1: Warm-up & Introduction ([Duration] minutes)\n\n*   Activity:\
+            \ [Activity Name]\n*   Teacher Actions:\n    1. [Teacher action step 1]\n\
+            \    2. [Teacher action step 2]\n*   Student Actions:\n    1. [Student\
+            \ action step 1]\n    2. [Student action step 2]\n\n---\n\n⏱️ Stage 2:\
+            \ Direct Instruction ([Duration] minutes)\n\n*   Activity: [Activity Name]\n\
+            *   Teacher Actions:\n    1. [Teacher action step 1]\n    2. [Teacher\
+            \ action step 2]\n*   Student Actions:\n    1. [Student action step 1]\n\
+            \    2. [Student action step 2]\n\n---\n\n⏱️ Stage 3: Guided Practice\
+            \ ([Duration] minutes)\n\n*   Activity: [Activity Name]\n*   Teacher Actions:\n\
+            \    1. [Teacher action step 1]\n    2. [Teacher action step 2]\n*   Student\
+            \ Actions:\n    1. [Student action step 1]\n    2. [Student action step\
+            \ 2]\n\n---\n\n⏱️ Stage 4: Independent Practice ([Duration] minutes)\n\
+            \n*   Activity: [Activity Name]\n*   Teacher Actions:\n    1. [Teacher\
+            \ action step 1]\n    2. [Teacher action step 2]\n*   Student Actions:\n\
+            \    1. [Student action step 1]\n    2. [Student action step 2]\n\n---\n\
+            \n⏱️ Stage 5: Closure & Review ([Duration] minutes)\n\n*   Activity: [Activity\
+            \ Name]\n*   Teacher Actions:\n    1. [Teacher action step 1]\n    2.\
+            \ [Teacher action step 2]\n*   Student Actions:\n    1. [Student action\
+            \ step 1]\n    2. [Student action step 2]\n"
+        selected: false
+        title: LLM
+        type: llm
+        vision:
+          enabled: false
+      height: 98
+      id: '1780500715700'
+      position:
+        x: 382
+        y: 282
+      positionAbsolute:
+        x: 382
+        y: 282
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        outputs:
+        - value_selector:
+          - '1780500715700'
+          - text
+          value_type: string
+          variable: lesson_plan
+        selected: false
+        title: Output
+        type: end
+      height: 98
+      id: '1780501552658'
+      position:
+        x: 986
+        y: 282
+      positionAbsolute:
+        x: 986
+        y: 282
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: 60.9445516711062
+      y: 94.79341973606279
+      zoom: 0.6909564358427106
+  rag_pipeline_variables: []
