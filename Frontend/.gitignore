@@ -12,6 +12,7 @@ dist/*
 !dist/client/
 dist/client/*
 !dist/client/.gitkeep
+.vercel
 dist-ssr
 .output
 .vinxi
