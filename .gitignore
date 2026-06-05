@@ -16,7 +16,10 @@ yarn-error.log*
 pnpm-debug.log*
 
 # Build output
-dist/
+dist/*
+!dist/client/
+dist/client/*
+!dist/client/.gitkeep
 dist-ssr/
 .output/
 .vinxi/
