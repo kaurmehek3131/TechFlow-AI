@@ -34,3 +34,5 @@ dist-ssr
 .env.*
 !.env.example
 .dev.vars
+.bun-cache/
+
